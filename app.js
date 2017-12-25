@@ -102,47 +102,25 @@ function handleMessage(sender_psid, received_message) {
   let response;
 
   // Check if the message contains text
-  if (received_message.text) {    
-    if (received_message.text.includes('recommend')) {
-      handleNaverQuery(sender_psid);
+  const nlp = received_message.nlp;
+  if (nlp && nlp.entities && nlp.intent) {
+    const entities = nlp.entities;
+    const intent = entities.intent[0].value;
+    if (intent === 'recommend') {
+      const options = {
+        category: entities.isp_category ? entities.isp_category[0].value : null;
+      };
+      handleNaverQuery(sender_psid, options);
       return;
-    } else {
-      // Create the payload for a basic text message
-      response = {
-        "text": `You sent the message: "${received_message.text}". Now send me an image!`
-      }
-    }
-  } else if (received_message.attachments) {
-  
-    // Gets the URL of the message attachment
-    let attachment_url = received_message.attachments[0].payload.url;
-    response = {
-      "attachment": {
-        "type": "template",
-        "payload": {
-          "template_type": "generic",
-          "elements": [{
-            "title": "Is this the right picture?",
-            "subtitle": "Tap a button to answer.",
-            "image_url": attachment_url,
-            "buttons": [
-              {
-                "type": "postback",
-                "title": "Yes!",
-                "payload": "yes",
-              },
-              {
-                "type": "postback",
-                "title": "No!",
-                "payload": "no",
-              }
-            ],
-          }]
-        }
-      }
     }
   }
-  
+
+  if (received_message.text) {
+    response = {
+      "text": `You sent the message: "${received_message.text}". Now send me an image!`
+    }
+  }
+
   // Sends the response message
   callSendAPI(sender_psid, response);
 }
@@ -187,8 +165,8 @@ function callSendAPI(sender_psid, response) {
   }); 
 }
 
-async function handleNaverQuery(sender_psid) {
-  const result = await naver.query();
+async function handleNaverQuery(sender_psid, options) {
+  const result = await naver.query(options);
   const total = result.length;
   const pick = Math.min(total, parseInt(Math.random() * 4) + 1);
   const idx = [];
