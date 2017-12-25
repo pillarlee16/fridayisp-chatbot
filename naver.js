@@ -14,7 +14,7 @@ async function query(options) {
     return;
   }
 
-  const category = options && options.category ? options.category : null;
+  const category = options && options.category ? options.category.toUpperCase() : null;
   const month = options && options.month ? options.month : 0;
 
   await page.goto('https://swindow.naver.com/art/external/booking', { waitUntil: 'networkidle2' });
