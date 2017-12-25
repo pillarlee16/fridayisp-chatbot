@@ -115,15 +115,7 @@ function handleMessage(sender_psid, received_message) {
       return;
     } else if (intent === 'welcome') {
       response = {
-        "text": `
-          Hello. This is "Friday Inspiration Bot".\n
-          I can recommend you a good place in Seoul to inspire.\n
-          Ask me anything!!\n\n
-
-          For example, just tell me. "Would you recommend? or recommend".\n
-          If you want to find a specific category,\n
-          I can search 'EXHIBIT', 'MUSICAL', 'CONCERT', 'DRAMA', 'CLASSIC', 'KIDS'.
-        `
+        "text": `Hello. This is "Friday Inspiration Bot".\nI can recommend you a good place in Seoul to inspire.\nAsk me anything!!\n\nFor example, just tell me. "Would you recommend? or recommend".\nIf you want to find a specific category,\nI can search 'EXHIBIT', 'MUSICAL', 'CONCERT', 'DRAMA', 'CLASSIC', 'KIDS'.`
       }
     }
   }
