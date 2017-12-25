@@ -21,6 +21,7 @@ const
   request = require('request'),
   express = require('express'),
   body_parser = require('body-parser'),
+  path = require('path'),
   app = express().use(body_parser.json()); // creates express http server
 
 const naver = require('./naver.js');
@@ -31,6 +32,8 @@ const port = process.env.PORT || 1337;
 
 // Sets server port and logs message on success
 app.listen(port, () => console.log('webhook is listening on ' + port));
+
+app.use('/static', express.static(path.resolve(__dirname, 'static')));
 
 // Accepts POST requests at /webhook endpoint
 app.post('/webhook', (req, res) => {  
