@@ -121,7 +121,7 @@ function handleMessage(sender_psid, received_message) {
         "text": `Hello. This is "Friday Inspiration Bot".\nI can recommend you a good place in Seoul to inspire.\nAsk me anything!!\n\nFor example, just tell me. "Would you recommend? or recommend".\nOr "When is the inspiration day?"\n\nIf you want to find a specific category,\nsay more detail like 'exhibit', 'musical', 'concert', 'drama', 'classic', 'kids'.`
       }
     } else if (intent === 'date') {
-      reponse = {
+      response = {
         "text": "The inspiration day is on Friday of 2nd week every month",
       }
     }
