@@ -189,29 +189,46 @@ function callSendAPI(sender_psid, response) {
 
 async function handleNaverQuery(sender_psid) {
   const result = await naver.query();
-  const item = result[parseInt(Math.random() * result.length)];
+  const total = result.length;
+  const pick = Math.min(total, parseInt(Math.random() * 4) + 1);
+  const idx = [];
+
+  for (let i = 0; i < pick; i++) {
+    let j = parseInt(Math.random() * total);
+    while (idx.indexOf(j) >= 0) {
+      j = parseInt(Math.random() * total);
+    }
+    idx.push(j);
+  }
+
+  const elements = [];
+  for (let i = 0; i < idx.length; i++) {
+    const item = result[i];
+
+    elements.push({
+      "title": item.title,
+      "subtitle": item.place + ' / ' + item.duration,
+      "image_url": item.imgSrc,
+      "default_action": {
+        "type": "web_url",
+        "url": item.link,
+      },
+      "buttons": [
+        {
+          "type": "postback",
+          "title": "More!",
+          "payload": "more",
+        },
+      ],
+    });
+  }
 
   const response = {
     "attachment": {
       "type": "template",
       "payload": {
         "template_type": "generic",
-        "elements": [{
-          "title": item.title,
-          "subtitle": item.place + ' / ' + item.duration,
-          "image_url": item.imgSrc,
-          "default_action": {
-            "type": "web_url",
-            "url": item.link,
-          },
-          "buttons": [
-            {
-              "type": "postback",
-              "title": "More!",
-              "payload": "more",
-            },
-          ],
-        }]
+        "elements": elements,
       }
     }
   };
