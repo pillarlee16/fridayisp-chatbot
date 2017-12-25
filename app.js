@@ -109,7 +109,7 @@ function handleMessage(sender_psid, received_message) {
     const intent = entities.intent[0].value;
     if (intent === 'recommend') {
       const options = {
-        category: entities.isp_category ? entities.isp_category[0].value : null;
+        category: entities.isp_category ? entities.isp_category[0].value : null,
       };
       handleNaverQuery(sender_psid, options);
       return;
