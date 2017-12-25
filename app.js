@@ -103,6 +103,7 @@ function handleMessage(sender_psid, received_message) {
 
   // Check if the message contains text
   const nlp = received_message.nlp;
+  console.log(JSON.stringify(nlp));
   if (nlp && nlp.entities && nlp.intent) {
     const entities = nlp.entities;
     const intent = entities.intent[0].value;
