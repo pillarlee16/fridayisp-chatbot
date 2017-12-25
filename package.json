@@ -1,0 +1,26 @@
+{
+  "name": "fridayisp-chatbot",
+  "version": "1.0.0",
+  "description": "* https://www.facebook.com/fridayisp/",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "puppeteer": "^0.13.0",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pillarlee16/fridayisp-chatbot.git"
+  },
+  "author": "Byeongju Lee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pillarlee16/fridayisp-chatbot/issues"
+  },
+  "homepage": "https://github.com/pillarlee16/fridayisp-chatbot#readme"
+}
