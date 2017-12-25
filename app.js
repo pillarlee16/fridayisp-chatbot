@@ -155,13 +155,10 @@ function handlePostback(sender_psid, received_postback) {
   let payload = received_postback.payload;
 
   // Set the response based on the postback payload
-  if (payload === 'yes') {
-    response = { "text": "Thanks!" }
-  } else if (payload === 'no') {
-    response = { "text": "Oops, try sending another image." }
+  if (payload === 'more') {
+    handleNaverQuery();
+    return;
   }
-  // Send the message to acknowledge the postback
-  callSendAPI(sender_psid, response);
 }
 
 // Sends response messages via the Send API
@@ -193,29 +190,31 @@ async function handleNaverQuery(sender_psid) {
   const result = await naver.query();
   const item = result[parseInt(Math.random() * result.length)];
 
-  const payload = {
-    template_type: 'generic',
-    elements: [
-      {
-        title: item.title,
-        image_url: item.imgSrc,
-        subtitle: item.place + ' / ' + item.duration,
-        default_action: {
-          type: 'web_url',
-          url: item.link,
-          messenger_extensions: true,
-          webview_height_ratio: 'TALL',
-        }
-      }
-    ]
-  };
-
   const response = {
-    attachment: {
-      type: 'template',
-      payload,
-    },
+    "attachment": {
+      "type": "template",
+      "payload": {
+        "template_type": "generic",
+        "elements": [{
+          "title": item.title,
+          "subtitle": item.place + ' / ' + item.duration,
+          "image_url": item.imgSrc,
+          "default_action": {
+            "type": "web_url",
+            "url": item.link,
+          },
+          "buttons": [
+            {
+              "type": "postback",
+              "title": "More!",
+              "payload": "more",
+            },
+          ],
+        }]
+      }
+    }
   };
 
+  console.log(JSON.stringify())
   callSendAPI(sender_psid, response);
 }
