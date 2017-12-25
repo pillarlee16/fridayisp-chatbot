@@ -23,6 +23,8 @@ const
   body_parser = require('body-parser'),
   app = express().use(body_parser.json()); // creates express http server
 
+const naver = require('./naver.js');
+
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 const port = process.env.PORT || 1337;
@@ -101,10 +103,14 @@ function handleMessage(sender_psid, received_message) {
 
   // Check if the message contains text
   if (received_message.text) {    
-
-    // Create the payload for a basic text message
-    response = {
-      "text": `You sent the message: "${received_message.text}". Now send me an image!`
+    if (received_message.text.includes('recommend')) {
+      handleNaverQuery(sender_psid);
+      return;
+    } else {
+      // Create the payload for a basic text message
+      response = {
+        "text": `You sent the message: "${received_message.text}". Now send me an image!`
+      }
     }
   } else if (received_message.attachments) {
   
@@ -181,4 +187,35 @@ function callSendAPI(sender_psid, response) {
       console.error("Unable to send message:" + err);
     }
   }); 
+}
+
+async function handleNaverQuery(sender_psid) {
+  const result = await naver.query();
+  const item = result[parseInt(Math.random() * result.length)];
+
+  const payload = {
+    template_type: 'generic',
+    elements: [
+      {
+        title: item.title,
+        image_url: item.imgSrc,
+        subtitle: item.place + ' / ' + item.duration,
+        default_action: {
+          type: 'web_url',
+          url: item.link,
+          messenger_extensions: true,
+          webview_height_ratio: 'TALL',
+        }
+      }
+    ]
+  };
+
+  const response = {
+    attachment: {
+      type: 'template',
+      payload,
+    },
+  };
+
+  callSendAPI(sender_psid, response);
 }
