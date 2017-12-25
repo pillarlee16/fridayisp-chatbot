@@ -203,7 +203,7 @@ async function handleNaverQuery(sender_psid) {
 
   const elements = [];
   for (let i = 0; i < idx.length; i++) {
-    const item = result[i];
+    const item = result[idx[i]];
 
     elements.push({
       "title": item.title,
