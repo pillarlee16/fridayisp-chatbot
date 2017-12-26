@@ -109,7 +109,7 @@ function handleMessage(sender_psid, received_message) {
   console.log(JSON.stringify(nlp));
   if (nlp && nlp.entities) {
     const entities = nlp.entities;
-    const intent = entities.intent[0].value;
+    const intent = entities.intent ? entities.intent[0].value : null;
     if (intent === 'recommend') {
       const options = {
         category: entities.isp_category ? entities.isp_category[0].value : null,
